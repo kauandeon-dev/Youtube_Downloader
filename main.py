@@ -15,6 +15,14 @@ except Exception:
     exit()
     
 yt = YouTube(url, on_progress_callback=on_progress)
-ys = yt.streams.get_highest_resolution()
+streams = yt.streams.filter(progressive=True, file_extension="mp4").order_by("resolution").desc()
+
+print("\nQualidades disponíveis:")
+for i, stream in enumerate(streams):
+    tamanho = round(stream.filesize / 1024 / 1024, 2) if stream.filesize else "?"
+    print(f"[{i}] {stream.resolution} - {tamanho} MB")
+
+escolha = int(input("\nEscolha o índice: "))
+ys = streams[escolha]
 print(yt.title)
 ys.download(output_path=r"D:\Projetos\Baixar MP4 Youtube\Vídeos Baixados")
