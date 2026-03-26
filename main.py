@@ -25,4 +25,4 @@ for i, stream in enumerate(streams):
 escolha = int(input("\nEscolha o índice: "))
 ys = streams[escolha]
 print(yt.title)
-ys.download(output_path=r"D:\Projetos\Baixar MP4 Youtube\Vídeos Baixados")
+ys.download(output_path=r"Vídeos Baixados")
