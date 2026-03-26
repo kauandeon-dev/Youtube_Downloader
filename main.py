@@ -1,28 +1,31 @@
-from pytubefix import YouTube
-from pytubefix.cli import on_progress
+from audio import baixar_audio
+from video import baixar_video
 
-print("Digite a URL do vídeo do Youtube")
-url = input("URL: ").strip()
+def main():
+    print("[1] Baixar vídeo")
+    print("[2] Baixar áudio")
 
-if "youtube.com" not in url and "youtu.be" not in url:
-    print("Link inválido")
-    exit()
+    try:
+        opcao = int(input("Escolha a opção: "))
+    except ValueError:
+        print("Opção inválida")
+        return
 
-try:
-    yt = YouTube(url)
-except Exception:
-    print("Vídeo inválido ou indisponível")
-    exit()
-    
-yt = YouTube(url, on_progress_callback=on_progress)
-streams = yt.streams.filter(progressive=True, file_extension="mp4").order_by("resolution").desc()
+    if opcao == 1:
+        url = input("Digite o link do vídeo: ").strip()
+        try:
+            baixar_video(url)
+        except Exception as e:
+            print(e)
+    elif opcao == 2:
+        url = input("Digite o link do áudio: ").strip()
+        try:
+            baixar_audio(url)
+        except Exception as e:
+            print(e)
+    else:
+        print("Opção inválida")
 
-print("\nQualidades disponíveis:")
-for i, stream in enumerate(streams):
-    tamanho = round(stream.filesize / 1024 / 1024, 2) if stream.filesize else "?"
-    print(f"[{i}] {stream.resolution} - {tamanho} MB")
 
-escolha = int(input("\nEscolha o índice: "))
-ys = streams[escolha]
-print(yt.title)
-ys.download(output_path=r"Vídeos Baixados")
+if __name__ == "__main__":
+    main()
